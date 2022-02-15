@@ -1,10 +1,13 @@
-import React, {useContext} from 'react'
+import React, {useContext,useState} from 'react'
 import styles from './Cart.module.css'
 import CartItem from './CartItem';
 import Modal from './../UI/Modal';
 import CartContext from '../../store/cort-context';
+import Checkout from './Checkout';
 
 const Cart = (props) => {
+
+  const [isOrder, setIsOrder] = useState(false);
 
   const cartCtx = useContext(CartContext)
 
@@ -32,20 +35,41 @@ const Cart = (props) => {
           ))}
       </ul>
     )
+    const orderHandler = () => {
+      setIsOrder(true)
+    }
+
+    const orderdiv = <div className={styles.actions}>
+    <button className={styles['button--alt']} onClick={props.onClose} >Close</button>
+    <button className={styles.button} onClick={orderHandler}>Order</button>
+    </div>
     
     return (
         <>
-           <Modal onClose={props.onClose}>
+           {/* <Modal onClose={props.onClose}>
                {cartItems}
                <div className={styles.total} >
                     <span>Total Amount</span>
                     <span> TK:{totolAmount} </span>
                </div>
+               <Checkout/>
                <div className={styles.actions}>
                   <button className={styles['button--alt']} onClick={props.onClose} >Close</button>
                    <button className={styles['button']}>Order</button>
                </div>
-            </Modal> 
+            </Modal>  */}
+
+
+            <Modal onClose={props.onClose}>
+                 {cartItems}
+                   <div className={styles.total}>
+                     <span>Total Amount</span>
+                     <span> TK:{totolAmount} </span>
+                  </div>
+                  {isOrder && <Checkout onCancel={props.onClose} /> }
+                  {!isOrder && orderdiv}
+                   
+                </Modal>
         </>
     )
 }
@@ -55,13 +79,19 @@ export default Cart
 
 
 
-// import classes from './Cart.module.css';
+
+
+
+
+
+
+// import styles from './Cart.module.css';
 // import Modal from './../UI/Modal';
 // import CartContext from './../../store/cort-context';
 
 // const Cart = (props) => {
 //   const cartItems = (
-//     <ul className={classes['cart-items']}>
+//     <ul className={styles['cart-items']}>
 //       {[{ id: 'c1', name: 'Sushi', amount: 2, price: 12.99 }].map((item) => (
 //         <li>{item.name}</li>
 //       ))}
@@ -71,13 +101,13 @@ export default Cart
 //   return (
 //     <Modal onClose={props.onClose}>
 //       {cartItems}
-//       <div className={classes.total}>
+//       <div className={styles.total}>
 //         <span>Total Amount</span>
 //         <span>35.62</span>
 //       </div>
-//       <div className={classes.actions}>
-//         <button className={classes['button--alt']} onClick={props.onClose} >Close</button>
-//         <button className={classes.button}>Order</button>
+//       <div className={styles.actions}>
+//         <button className={styles['button--alt']} onClick={props.onClose} >Close</button>
+//         <button className={styles.button}>Order</button>
 //       </div>
 //     </Modal>
 //   );
